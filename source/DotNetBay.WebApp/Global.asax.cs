@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DotNetBay.Core.Execution;
+using DotNetBay.Data.EF;
+using DotNetBay.Interfaces;
 
 namespace DotNetBay.WebApp
 {
@@ -13,6 +16,15 @@ namespace DotNetBay.WebApp
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            
+            // DotNetBay Init
+            IMainRepository repo = new EFMainRepository();
+            repo.SaveChanges();
+
+            AuctionRunner = new AuctionRunner(repo);
+            AuctionRunner.Start();
         }
+
+        public static AuctionRunner AuctionRunner { get; private set; }
     }
 }
