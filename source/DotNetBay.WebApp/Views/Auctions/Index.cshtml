@@ -1,7 +1,13 @@
 ﻿@model IEnumerable<DotNetBay.Model.Auction>
 
+
+
 @{
     ViewBag.Title = "Index";
+}
+
+@section AddToHead{
+    <link href="@Url.Content("~/Content/auctions.css")" rel="stylesheet" type="text/css" />
 }
 
 <h2>Index</h2>
@@ -24,8 +30,10 @@
         <th>Winner</th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
+@foreach (var item in Model)
+{
+    string statusClass = (item.IsRunning ? "runningAuction" : item.IsClosed ? "closedAuction" : string.Empty);
+    <tr class="@statusClass">
         <td><!-- Auction Image --></td>
         <td>
             @if (item.IsRunning)

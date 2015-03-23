@@ -1,0 +1,7 @@
+﻿.runningAuction {
+    background-color: green;
+}
+
+.closedAuction {
+    background-color: red;
+}
