@@ -7,6 +7,7 @@ using DotNetBay.Core;
 using DotNetBay.Data.EF;
 using DotNetBay.Interfaces;
 using DotNetBay.Model;
+using DotNetBay.WebApp.Models;
 
 namespace DotNetBay.WebApp.Controllers
 {
@@ -44,12 +45,26 @@ namespace DotNetBay.WebApp.Controllers
 
         // POST: Auctions/Create
         [HttpPost]
-        public ActionResult Create(Auction auction)
+        public ActionResult Create(NewAuctionViewModel auctionViewModel)
         {
-            var members = new SimpleMemberService(this.repo);
-            auction.Seller = members.GetCurrentMember();
-            this.service.Save(auction);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var members = new SimpleMemberService(this.repo);
+
+                Auction auction = new Auction();
+                auction.Title = auctionViewModel.Titel;
+                auction.StartPrice = auctionViewModel.StartPrice;
+                auction.Description = auctionViewModel.Description;
+                auction.StartDateTimeUtc = auctionViewModel.StartDateTimeUtc;
+                auction.EndDateTimeUtc = auctionViewModel.EndDateTimeUtc;
+                auction.Image = auctionViewModel.Image;
+
+                auction.Seller = members.GetCurrentMember();
+
+                this.service.Save(auction);
+                return RedirectToAction("Index");
+            }
+            return View();
         }
 
     }
