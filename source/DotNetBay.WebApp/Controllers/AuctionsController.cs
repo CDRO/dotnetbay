@@ -13,7 +13,7 @@ namespace DotNetBay.WebApp.Controllers
     public class AuctionsController : Controller
     {
         private IMainRepository repo;
-        private IAuctionService service;
+        private AuctionService service;
 
         public AuctionsController()
         {
@@ -27,73 +27,30 @@ namespace DotNetBay.WebApp.Controllers
         // GET: Auctions
         public ActionResult Index()
         {
-            return View();
+            return View(this.service.GetAll());
         }
 
         // GET: Auctions/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(this.service.GetById(id));
         }
 
         // GET: Auctions/Create
         public ActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         // POST: Auctions/Create
         [HttpPost]
         public ActionResult Create(Auction auction)
         {
-            IMemberService members = new SimpleMemberService(this.repo);
+            var members = new SimpleMemberService(this.repo);
             auction.Seller = members.GetCurrentMember();
             this.service.Save(auction);
-            return this.RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
-        // GET: Auctions/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Auctions/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Auctions/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Auctions/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

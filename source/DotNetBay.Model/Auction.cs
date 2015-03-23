@@ -22,11 +22,14 @@ namespace DotNetBay.Model
 
         public double CurrentPrice { get; set; }
 
+
+        
         /// <summary>
         /// Gets or sets the UTC DateTime values to avoid wrong data when serializing the values
         /// </summary>
         public DateTime StartDateTimeUtc { get; set; }
 
+        
         /// <summary>
         /// Gets or sets the UTC DateTime values to avoid wrong data when serializing the values
         /// </summary>
