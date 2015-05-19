@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetBay.Data.EF", "DotNet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetBay.WebApp", "DotNetBay.WebApp\DotNetBay.WebApp.csproj", "{05C4C02C-C8C9-43F3-A19F-4A197FBCCFFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetBay.WebApi", "DotNetBay.WebApi\DotNetBay.WebApi.csproj", "{2EB0A13A-A27A-4693-AFBA-BE3FC4D14646}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{05C4C02C-C8C9-43F3-A19F-4A197FBCCFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05C4C02C-C8C9-43F3-A19F-4A197FBCCFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05C4C02C-C8C9-43F3-A19F-4A197FBCCFFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EB0A13A-A27A-4693-AFBA-BE3FC4D14646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EB0A13A-A27A-4693-AFBA-BE3FC4D14646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EB0A13A-A27A-4693-AFBA-BE3FC4D14646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EB0A13A-A27A-4693-AFBA-BE3FC4D14646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
