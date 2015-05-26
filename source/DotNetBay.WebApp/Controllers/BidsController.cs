@@ -62,7 +62,7 @@ namespace DotNetBay.WebApp.Controllers
             {
                 Member bidder = memberService.GetCurrentMember();
                 Auction auction = this.service.GetById(viewModel.AuctionId);
-                auction.ActiveBid = this.service.PlaceBid(bidder, auction, viewModel.CurrentBid);
+                auction.ActiveBid = this.service.PlaceBid(auction, viewModel.CurrentBid);
                 auction.Bids.Add(auction.ActiveBid);
                 auction.CurrentPrice = auction.ActiveBid.Amount;
                 this.service.Save(auction);
