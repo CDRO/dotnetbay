@@ -13,7 +13,8 @@ namespace DotNetBay.SelfHost
     {
         static void Main(string[] args)
         {
-            Type ctrlType = typeof (StatusController);
+            Type statusCtrlType = typeof (StatusController);
+            // Type auctionCtrlType = typeof (AuctionController);
             WebApp.Start<Startup>(url: "http://localhost:9001/");
             Console.ReadKey();
         }
