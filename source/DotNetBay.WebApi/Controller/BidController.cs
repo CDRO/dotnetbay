@@ -31,7 +31,7 @@ namespace DotNetBay.WebApi.Controller
         private IAuctionService AuctionService { get; set; }
 
         [HttpPost]
-        [Route("api/auctions/{auctionId}/")]
+        [Route("api/auctions/{auctionId}/bid")]
         public IHttpActionResult CreateBid([FromUri]long auctionId, [FromBody] CreateBidDto dto)
         {
             if (dto == null)

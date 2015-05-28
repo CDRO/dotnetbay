@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using DotNetBay.Core;
 using DotNetBay.Data.EF;
@@ -52,6 +55,26 @@ namespace DotNetBay.WebApi
             return this.Ok();
         }
 
+        [HttpPost]
+        [Route("api/auctions/{id}/image")]
+        public async Task<IHttpActionResult> AddImage([FromUri] long id)
+        {
+            Auction auction = AuctionService.GetById(id);
+            if (auction == null)
+            {
+                return this.StatusCode(HttpStatusCode.NotFound);
+            }
+
+            var streamProvider = await this.Request. Content.ReadAsMultipartAsync();
+            foreach (var file in streamProvider.Contents)
+            {
+                var image = await file.ReadAsByteArrayAsync();
+                auction.Image = image;
+            }
+            AuctionService.Save(auction);
+            return this.StatusCode(HttpStatusCode.Created);
+        }
+
         [HttpGet]
         [Route("api/auctions")]
         public IHttpActionResult GetAuctions()
@@ -67,7 +90,42 @@ namespace DotNetBay.WebApi
 
             return this.Ok(result);
         }
- 
+
+
+        [HttpGet]
+        [Route("api/auctions/{id}")]
+        public IHttpActionResult GetAuctionById([FromUri] long id)
+        {
+
+            Auction auction = AuctionService.GetById(id);
+            if (auction == null)
+            {
+                return this.StatusCode(HttpStatusCode.NotFound);
+            }
+            GetAuctionDto auctionDto = new GetAuctionDto();
+            auctionDto.CurrentPrice = auction.CurrentPrice;
+            auctionDto.SellerName = auction.Seller != null ? auction.Seller.DisplayName : null;
+            auctionDto.CurrentWinnerName = auction.ActiveBid != null && auction.ActiveBid.Bidder != null
+                ? auction.ActiveBid.Bidder.DisplayName
+                : null;
+            auctionDto.WinnerName = auction.Winner != null ? auction.Winner.DisplayName : null;
+
+            return this.Ok(auctionDto);
+        }
+
+        [HttpGet]
+        [Route("api/auctions/{id}/image")]
+        public IHttpActionResult GetAuctionImageById([FromUri] long id)
+        {
+
+            Auction auction = AuctionService.GetById(id);
+            if (auction == null)
+            {
+                return this.StatusCode(HttpStatusCode.NotFound);
+            }
+
+            return this.Ok(auction.Image);
+        }
 
     }
 }
