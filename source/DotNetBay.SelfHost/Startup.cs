@@ -26,7 +26,7 @@ namespace DotNetBay.SelfHost
 
             config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
-            // config.Formatters.Remove(config.Formatters.FormUrlEncodedFormatter);
+            config.Formatters.Remove(config.Formatters.FormUrlEncodedFormatter);
 
             app.UseWebApi(config); 
         }
