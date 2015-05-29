@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -51,8 +52,9 @@ namespace DotNetBay.WebApi
             auction.EndDateTimeUtc = dto.EndDateTimeUtc;
             auction.Seller = MemberService.GetCurrentMember();
 
-            AuctionService.Save(auction);
-            return this.Ok();
+            auction = AuctionService.Save(auction);
+            dto = MapFromEntity(auction);
+            return this.Created(string.Format("api/auctions/{0}", auction.Id), this.MapFromEntity(auction));
         }
 
         [HttpPost]
@@ -72,25 +74,39 @@ namespace DotNetBay.WebApi
                 auction.Image = image;
             }
             AuctionService.Save(auction);
-            return this.StatusCode(HttpStatusCode.Created);
+            return this.Created(string.Format("api/auctions/{0}/image", id),string.Empty);           
         }
 
         [HttpGet]
         [Route("api/auctions")]
         public IHttpActionResult GetAuctions()
         {
-            
-            var result = AuctionService.GetAll().Select(a =>
-                 new GetAuctionDto() {
-                     CurrentPrice = a.CurrentPrice,
-                     SellerName = a.Seller.DisplayName,
-                     CurrentWinnerName = a.ActiveBid.Bidder.DisplayName,
-                     WinnerName = a.Winner.DisplayName
-             });
-
+            List<AuctionDto> result = new List<AuctionDto>();
+            foreach (Auction a in AuctionService.GetAll())
+            {
+                result.Add(MapFromEntity(a));
+            }
             return this.Ok(result);
         }
 
+        private AuctionDto MapFromEntity(Auction a)
+        {
+            return new AuctionDto() {
+                     Id = a.Id,
+                     StartPrice =  a.StartPrice,
+                     CurrentPrice = a.CurrentPrice,
+                     IsClosed = a.IsClosed,
+                     IsRunning =  a.IsRunning,
+                     SellerName = a.Seller != null ? a.Seller.DisplayName : null,
+                     WinnerName = a.Winner != null ? a.Winner.DisplayName : null,
+                     CurrentWinnerName = a.ActiveBid != null && a.ActiveBid.Bidder != null ? a.ActiveBid.Bidder.DisplayName : null,
+                     Title =  a.Title,
+                     Description =  a.Description,
+                     StartDateTimeUtc = a.StartDateTimeUtc,
+                     EndDateTimeUtc = a.EndDateTimeUtc,
+                     CloseDateTimeUtc =  a.CloseDateTimeUtc
+             };
+        }
 
         [HttpGet]
         [Route("api/auctions/{id}")]
@@ -102,14 +118,7 @@ namespace DotNetBay.WebApi
             {
                 return this.StatusCode(HttpStatusCode.NotFound);
             }
-            GetAuctionDto auctionDto = new GetAuctionDto();
-            auctionDto.CurrentPrice = auction.CurrentPrice;
-            auctionDto.SellerName = auction.Seller != null ? auction.Seller.DisplayName : null;
-            auctionDto.CurrentWinnerName = auction.ActiveBid != null && auction.ActiveBid.Bidder != null
-                ? auction.ActiveBid.Bidder.DisplayName
-                : null;
-            auctionDto.WinnerName = auction.Winner != null ? auction.Winner.DisplayName : null;
-
+            AuctionDto auctionDto = this.MapFromEntity(auction);
             return this.Ok(auctionDto);
         }
 

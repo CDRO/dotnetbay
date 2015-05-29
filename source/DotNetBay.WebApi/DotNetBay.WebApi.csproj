@@ -64,7 +64,7 @@
     <Compile Include="Controller\AuctionController.cs" />
     <Compile Include="Controller\BidController.cs" />
     <Compile Include="Dto\AuctionDto.cs" />
-    <Compile Include="Dto\CreateBidDto.cs" />
+    <Compile Include="Dto\BidDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller\StatusController.cs" />
   </ItemGroup>

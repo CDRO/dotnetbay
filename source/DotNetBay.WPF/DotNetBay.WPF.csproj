@@ -85,7 +85,7 @@
     </ApplicationDefinition>
     <Compile Include="Command\AuctionCmd.cs" />
     <Compile Include="Services\Dto\AuctionDto.cs" />
-    <Compile Include="Services\Dto\CreateBidDto.cs" />
+    <Compile Include="Services\Dto\BidDto.cs" />
     <Compile Include="Services\RemoteAuctionService.cs" />
     <Compile Include="ViewModel\BidViewModel.cs" />
     <Compile Include="ViewModel\SellViewModel.cs" />

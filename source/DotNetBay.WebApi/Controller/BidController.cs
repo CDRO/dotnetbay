@@ -31,8 +31,8 @@ namespace DotNetBay.WebApi.Controller
         private IAuctionService AuctionService { get; set; }
 
         [HttpPost]
-        [Route("api/auctions/{auctionId}/bid")]
-        public IHttpActionResult CreateBid([FromUri]long auctionId, [FromBody] CreateBidDto dto)
+        [Route("api/auctions/{auctionId}/bids")]
+        public IHttpActionResult CreateBid([FromUri]long auctionId, [FromBody] BidDto dto)
         {
             if (dto == null)
             {
@@ -44,12 +44,37 @@ namespace DotNetBay.WebApi.Controller
             {
                 return this.StatusCode(HttpStatusCode.NotFound);
             }
-            Member bidder = MemberService.GetCurrentMember();
-            Repository.Add(new Bid() { ReceivedOnUtc = DateTime.UtcNow, Bidder = bidder, Amount = dto.Amount, Auction = auction });
+            dto.BidderName = MemberService.GetCurrentMember().DisplayName;
+            dto.ReceivedOnUtc = DateTime.UtcNow;
+            Bid bid = MapFrom(dto);
+            bid = Repository.Add(bid);
+            return this.Created(string.Format("api/auctions/{0}/bids/{1}", auctionId,bid.Id), MapFrom(dto));
+        }
 
+        private Bid MapFrom(BidDto bid)
+        {
+            return new Bid()
+            {
+                Id = bid.Id,
+                ReceivedOnUtc = bid.ReceivedOnUtc,
+                Amount = bid.Amount,
+                Accepted = bid.Accepted,
+                Bidder = new Member() {DisplayName = bid.BidderName},
+                TransactionId = bid.TransactionId
+            };
+        }
 
-            return this.StatusCode(HttpStatusCode.Created);
-
+        private BidDto MapFrom(Bid bid)
+        {
+            return new BidDto()
+            {
+                Id = bid.Id,
+                ReceivedOnUtc = bid.ReceivedOnUtc,
+                Amount = bid.Amount,
+                Accepted = bid.Accepted,
+                BidderName = bid.Bidder != null ? bid.Bidder.DisplayName: null,
+                TransactionId = bid.TransactionId
+            };
         }
     }
 }
