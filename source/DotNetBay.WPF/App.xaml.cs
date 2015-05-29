@@ -12,7 +12,6 @@ using DotNetBay.Data;
 using DotNetBay.Data.FileStorage;
 using DotNetBay.Core.Execution;
 using DotNetBay.Model;
-using DotNetBay.Data.EF;
 
 namespace DotNetBay.WPF
 {
@@ -24,10 +23,10 @@ namespace DotNetBay.WPF
         
         public App()
         {
-            this.MainRepository = new EFMainRepository();
-            this.AuctionRunner = new AuctionRunner(this.MainRepository);
-            this.AuctionRunner.Start();
-            this.InitDemoAuctions();
+            // this.MainRepository = new EFMainRepository();
+            // this.AuctionRunner = new AuctionRunner(this.MainRepository);
+            // this.AuctionRunner.Start();
+            // this.InitDemoAuctions();
         }
 
         public IMainRepository MainRepository

@@ -36,7 +36,7 @@ namespace DotNetBay.WebApi
 
         [HttpPost]
         [Route("api/auctions")]
-        public IHttpActionResult AddAuction(CreateAuctionDto dto)
+        public IHttpActionResult AddAuction(AuctionDto dto)
         {
             if (dto == null)
             {
@@ -47,8 +47,8 @@ namespace DotNetBay.WebApi
             auction.Title = dto.Title;
             auction.Description = dto.Description;
             auction.StartPrice = dto.StartPrice;
-            auction.StartDateTimeUtc = DateTime.Parse(dto.StartDateTimeUtc);
-            auction.EndDateTimeUtc = DateTime.Parse(dto.EndDateTimeUtc);
+            auction.StartDateTimeUtc = dto.StartDateTimeUtc;
+            auction.EndDateTimeUtc = dto.EndDateTimeUtc;
             auction.Seller = MemberService.GetCurrentMember();
 
             AuctionService.Save(auction);

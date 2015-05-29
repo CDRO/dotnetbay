@@ -8,6 +8,7 @@ using System.Windows.Input;
 using DotNetBay.Core;
 using DotNetBay.Model;
 using DotNetBay.WPF.Command;
+using DotNetBay.WPF.Services;
 using DotNetBay.WPF.View;
 
 namespace DotNetBay.WPF.ViewModel
@@ -48,8 +49,7 @@ namespace DotNetBay.WPF.ViewModel
         {
             this.Auctions = new ObservableCollection<Auction>();
             App app = (App) App.Current;
-            var memberService = new SimpleMemberService(app.MainRepository);
-            var service = new AuctionService(app.MainRepository, memberService);
+            var service = new RemoteAuctionService();
 
             foreach (var auction in service.GetAll())
             {
