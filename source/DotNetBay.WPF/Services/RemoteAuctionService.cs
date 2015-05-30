@@ -87,7 +87,6 @@ namespace DotNetBay.WPF.Services
                 Winner = new Member() { DisplayName = dto.CurrentWinnerName },
                 Seller = new Member() { DisplayName = dto.SellerName },
                 Image = this.GetAuctionImage(dto.Id),
-                // Bids = this.MapFrom(dto.Bids),
             };
         }
 
@@ -103,9 +102,14 @@ namespace DotNetBay.WPF.Services
             };
         }
 
-        private byte[] GetAuctionImage(long imageId)
+        private byte[] GetAuctionImage(long auctionId)
         {
-            return null;
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.GetAsync(new Uri("http://localhost:49202/api/auctions/" + auctionId)).Result;
+                response.EnsureSuccessStatusCode();
+                return response.Content.ReadAsByteArrayAsync().Result;
+            }
         }
     }
 }
